@@ -1,0 +1,162 @@
+---
+title: "Joe_Rovalino_wk#3_math"
+author: "Joe Rovalino"
+date: "8/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1) Data Exploration: This should include summary statistics, means, medians, quartiles, or any
+other relevant information about the data set. Please include some conclusions in the R
+Markdown text.
+
+ 
+```{r}
+#install.packages("ggplot2")
+require(ggplot2)
+
+#Loads the data from URL. Credited data creator in github description. Basic # of rows and Columns. This is S&P Stock data
+
+  urldata <- read.csv("https://raw.githubusercontent.com/jrovalino/RWk3FinalProject/master/Smarket.csv", header = TRUE, sep = ",")
+#urldata
+nrow(urldata)
+ncol(urldata)
+str(urldata)
+```
+#Getting stats on the data and performing data exploration:
+
+```{r}
+summary(urldata)
+#Mean and Median for "Volumes" vector in the data.frame urldata for Volume Column
+YrsofData <-unique(urldata$Year)
+YrsofData
+data2001 <- subset(urldata, Year == 2001)
+#data2001
+#2001 Mean and Median
+Vol2001MeanRow <- mean((data2001[["Volume"]]))
+Vol2001MeanRow
+Vol2001MedianRow<-median(c(data2001[,8]))
+Vol2001MedianRow
+data2002 <- subset(urldata, Year == 2002)
+#data2002
+#2002 Mean and Median
+Vol2002MeanRow <- mean((data2002[["Volume"]]))
+Vol2002MeanRow
+Vol2002MedianRow<-median(c(data2002[,8]))
+Vol2002MedianRow
+data2003 <- subset(urldata, Year == 2003)
+#data2003
+#2003 Mean and Median
+Vol2003MeanRow <- mean((data2003[["Volume"]]))
+Vol2003MeanRow
+Vol2003MedianRow<-median(c(data2003[,8]))
+Vol2003MedianRow
+data2004 <- subset(urldata, Year == 2004)
+#data2004
+#2004 Mean and Median
+Vol2004MeanRow <- mean((data2004[["Volume"]]))
+Vol2004MeanRow
+Vol2004MedianRow<-median(c(data2004[,8]))
+Vol2004MedianRow
+data2005 <- subset(urldata, Year == 2005)
+#data2005
+#2005 Mean and Median
+Vol2005MeanRow <- mean((data2005[["Volume"]]))
+Vol2005MeanRow
+Vol2005MedianRow<-median(c(data2005[,8]))
+Vol2005MedianRow
+#Total Mean and Median
+TotVolMeanRow <- mean((urldata[["Volume"]]))
+TotVolMeanRow
+TotVolMedianRow<-median(c(urldata[,8]))
+TotVolMedianRow
+Perc2005Better<-(Vol2005MeanRow/TotVolMeanRow)
+Perc2005Better
+Perc2001Worse<-1-(Vol2001MeanRow/TotVolMeanRow)
+Perc2001Worse
+```
+#Volume Analysis:
+The Volume mean across the years(2001-2005 respectively): 1.22695, 1.428451, 1.384693, 1.424159, 1.917298
+Total Volume mean: 1.478305
+The volume mean in 2005 was the highest and 29% higher than the total mean (2001-2005). 
+The volume mean in 2001 was the lowest and 17% lower than the total mean (2001-2005).
+
+
+2) Data wrangling: Please perform some basic transformations. They will need to make sense but
+could include column renaming, creating a subset of the data, replacing values, or creating new
+columns with derived data (for example – if it makes sense you could sum two columns
+together)
+```{r}
+colnames(urldata)<-c("X","Year","%1D", "%2D","%3D", "%4D", "%5D","Vol","%Today","Dir")
+head(urldata)
+tail(urldata)
+```
+Change to columns name from Lag# columns to more meaningful name that represents the percent return for # Day prior. ex: %1D.
+
+Example of data wrangling is also demonstrated by the creation of 5 subsets by year for new dataframes used above and also renaming the lag fields.
+```{r}
+colnames(data2001)<-c("X","Year","%1D", "%2D","%3D", "%4D", "%5D","Vol","%Today","Dir")
+head(data2001)
+colnames(data2002)<-c("X","Year","%1D", "%2D","%3D", "%4D", "%5D","Vol","%Today","Dir")
+head(data2002)
+colnames(data2003)<-c("X","Year","%1D", "%2D","%3D", "%4D", "%5D","Vol","%Today","Dir")
+head(data2003)
+colnames(data2004)<-c("X","Year","%1D", "%2D","%3D", "%4D", "%5D","Vol","%Today","Dir")
+head(data2004)
+colnames(data2005)<-c("X","Year","%1D", "%2D","%3D", "%4D", "%5D","Vol","%Today","Dir")
+head(data2005)
+```
+3) Graphics: Please make sure to display at least one scatter plot, box plot and histogram. Don’t
+be limited to this. Please explore the many other options in R packages such as ggplot2.
+
+```{r}
+boxplot(data2001$'%Today')
+hist(data2001$'%Today')
+qplot(Vol, '%Today', data=data2001)
+boxplot(data2002$'%Today')
+hist(data2002$'%Today')
+qplot(Vol, '%Today', data=data2002)
+boxplot(data2003$'%Today')
+hist(data2003$'%Today')
+qplot(Vol, '%Today', data=data2003)
+boxplot(data2004$'%Today')
+hist(data2004$'%Today')
+qplot(Vol, '%Today', data=data2004)
+boxplot(data2005$'%Today')
+hist(data2005$'%Today')
+qplot(Vol, '%Today', data=data2005)
+boxplot(urldata$'%Today')
+hist(urldata$'%Today')
+qplot(Vol, '%Today', data=urldata)
+```
+
+4) Meaningful question for analysis: Please state at the beginning a meaningful question for
+analysis. Use the first three steps and anything else that would be helpful to answer the
+question you are posing from the data set you chose. Please write a brief conclusion paragraph
+in R markdown at the end.
+
+What was the largest Percent day change- Up and Down? Which year did it occur? Visually display %today? (Hint graph)
+
+```{r}
+str(urldata)
+urldata[which.max(urldata$'%Today'),]
+urldata[which.min(urldata$'%Today'),]
+#urldata
+hist(urldata$'%Today')
+```
+
+Answer: 
+
+The largest up % change was 5.733 in 2002
+
+The largest down % was -4.922 in 2001.
+
+5) BONUS – place the original .csv in a github file and have R read from the link. This will be a very
+useful skill as you progress in your data science education and career.
+
+Answer: 
+Please see beginning of code - it is pulling from github using:
+  urldata <- read.csv("https://raw.githubusercontent.com/jrovalino/RWk3FinalProject/master/Smarket.csv", header = TRUE, sep = ",")
